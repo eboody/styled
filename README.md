@@ -149,7 +149,6 @@ fn get_colors(variant: &Variant) -> ButtonColors {
     }
 }
 
-#[allow(unused_braces)]
 #[component]
 pub fn Button(cx: Scope, variant: Variant) -> impl IntoView {
     let disabled = variant.is(&Variant::DISABLED);
