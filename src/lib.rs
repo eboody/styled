@@ -1,10 +1,12 @@
+pub extern crate leptos_meta;
 use regex::Regex;
-pub use stylist::{Result, Style, style};
+pub use stylist::{style, Result, Style};
 
 #[allow(unused)]
 #[macro_export]
 macro_rules! view {
     ($cx: expr, $styles:expr, $($tokens:tt)*) => {{
+        use $crate::leptos_meta::{Style, StyleProps};
         let v = $cx;
         let style = $styles;
 
@@ -13,7 +15,7 @@ macro_rules! view {
         view! {
             v,
             class={class_name.clone()},
-            <style>{styles.clone()}</style>
+            <Style>{styles.clone()}</Style>
             $($tokens)*
         }
     }};

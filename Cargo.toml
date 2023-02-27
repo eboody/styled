@@ -9,10 +9,14 @@ categories = ["wasm", "web-programming"]
 readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
+[lib]
+path = "src/lib.rs"
+
 [dependencies]
 stylist = {version = "0.12.0", optional = false}
 regex = "1.7.1"
 leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false, features = [
   "serde",
 ], version = "0.2.0-beta" }
+leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false }
 
