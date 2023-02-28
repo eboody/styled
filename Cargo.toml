@@ -1,6 +1,6 @@
 [package]
 name = "styled"
-version = "0.1.20"
+version = "0.1.21"
 edition = "2021"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
