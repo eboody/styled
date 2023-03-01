@@ -4,3 +4,7 @@ members = [
   "styled",
   "styled_macro"
 ]
+
+[workspace.dependencies]
+styled = { path = "./styled" }
+styled_macro = { path = "./styled_macro" }

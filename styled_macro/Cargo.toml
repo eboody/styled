@@ -1,6 +1,6 @@
 [package]
 name = "styled_macro"
-version = "0.1.24"
+version = "0.1.0"
 edition = "2021"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
