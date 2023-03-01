@@ -1,76 +1,115 @@
-use leptos::leptos_dom::HydrationCtx;
-use regex::Regex;
-pub use stylist::{style, Result, Style};
-pub extern crate leptos_meta;
+extern crate proc_macro;
+use proc_macro::TokenStream;
+use proc_macro2::TokenTree;
+use quote::quote;
 
-#[macro_export]
-macro_rules! view {
-    ($cx: expr, $styles:expr, $($tokens:tt)*) => {{
-        use $crate::leptos_meta::{Style, StyleProps};
+#[macro_use]
+extern crate proc_macro_error;
 
-        let v = $cx;
-        let style = $styles;
+#[proc_macro]
+pub fn view(tokens: TokenStream) -> TokenStream {
+    let tokens: proc_macro2::TokenStream = tokens.into();
+    let mut tokens = tokens.into_iter();
+    tokens.next();
+    let comma = tokens.next();
 
-        let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
+    match comma {
+        Some(TokenTree::Punct(punct)) if punct.as_char() == ',' => {
+            let first = tokens.next();
+            let second = tokens.next();
+            let third = tokens.next();
+            let fourth = tokens.next();
 
-        view! {
-            v,
-            class={class_name.clone()},
-            <Style>{style_string.clone()}</Style>
-            $($tokens)*
+            let styles_result = match (&first, &second) {
+                (Some(TokenTree::Ident(first)), Some(TokenTree::Punct(eq)))
+                    if *first == "styles" && eq.as_char() == '=' =>
+                {
+                    match &fourth {
+                        Some(TokenTree::Punct(comma)) if comma.as_char() == ',' => third.clone(),
+                        _ => {
+                            abort!(
+                                punct, "To create scoped styles with the view! macro you must put a comma `,` after the value";
+                                help = r#"e.g., view!{cx, styles={my_styles_result}, <div>...</div>}"#
+                            )
+                        }
+                    }
+                }
+                _ => None,
+            };
+
+            let rest_of_tokens = tokens.collect::<proc_macro2::TokenStream>();
+
+            let output = quote! {
+                let hydration_context_id = leptos_dom::HydrationCtx::peek();
+                let style_struct = #styles_result.unwrap();
+                let class_name = format!("styled-{}", hydration_context_id);
+                let style_string = style_struct.get_style_str().to_owned();
+
+                style_struct.unregister();
+
+                let mut style_string_with_fixed_pixels = String::new();
+                let mut in_pixel_value = false;
+
+                for (index, c) in style_string.chars().enumerate() {
+                    if !in_pixel_value && c == '-' {
+                        let char_one_over = &style_string.chars().nth(index - 1);
+                        let char_two_over = &style_string.chars().nth(index - 2);
+                        let char_three_over = &style_string.chars().nth(index - 3);
+                        if let (Some(char_one), Some(char_two), Some(char_three)) =
+                            (char_one_over, char_two_over, char_three_over)
+                        {
+                            if *char_one == 'x' && *char_two == 'p' && char_three.is_ascii_digit() {
+                                in_pixel_value = true;
+                            }
+                        }
+                    }
+
+                    if in_pixel_value {
+                        style_string_with_fixed_pixels.push(' ');
+                        in_pixel_value = false;
+                    }
+
+                    style_string_with_fixed_pixels.push(c);
+                }
+
+                let mut new_style_string = String::new();
+                for line in style_string_with_fixed_pixels.lines() {
+                    if let Some(class_idx) = line.find(".stylist-") {
+                        if let Some(sel_idx) = line[class_idx..].find(|c: char| c.is_ascii_whitespace()) {
+                            let class = &line[class_idx..class_idx + sel_idx];
+                            let sel = match &line.chars().nth(&line.len() - 1) {
+                                Some('{') => &line[class_idx + sel_idx..line.len() - 1],
+                                _ => &line[class_idx + sel_idx..],
+                            };
+
+                            new_style_string.push('\n');
+                            new_style_string.push_str(sel.trim());
+                            new_style_string.push('.');
+                            new_style_string.push_str(&class_name);
+                            new_style_string.push_str(" {");
+                        }
+                    } else {
+                        new_style_string.push('\n');
+                        new_style_string.push_str(line);
+                    }
+                }
+                view! {
+                    cx,
+                    class={class_name.clone()},
+                    <Style>{new_style_string.clone()}</Style>
+                    #rest_of_tokens
+                }
+            };
+
+            
+
+            output.into()
         }
-    }};
-}
-
-pub fn get_style_info(styles_result: Result<Style>) -> StyleInfo {
-    let hydration_context_id = HydrationCtx::peek();
-
-    let style_struct = styles_result.unwrap();
-
-    let class_name = String::from("styled-") + &hydration_context_id.to_string();
-
-    let style_string = style_struct.get_style_str().to_owned();
-
-    style_struct.unregister();
-
-    let re = Regex::new(r"stylist-\w+").unwrap();
-
-    let style_string = re.replace_all(&style_string, &class_name);
-
-
-    let re = Regex::new(r"(\.styled(-\d+)+) (-?[_a-zA-Z\.#~]+[_a-zA-Z0-9-]*+)").unwrap();
-
-    let regex_to_fix_stylist_bug = Regex::new(r"(\dpx)([-])").unwrap();
-
-    let style_string_with_fixed_pixels = regex_to_fix_stylist_bug.replace_all(&style_string, "$1 $2").to_string();
-
-    let new_style_string = re
-        .replace_all(&style_string_with_fixed_pixels, "$3$1")
-        .to_string();
-
-    StyleInfo {
-        class_name,
-        style_string: new_style_string,
+        _ => {
+            abort_call_site!(
+                "view! macro needs a context and RSX: e.g., view! {{ cx, \
+                 <div>...</div> }}"
+            )
+        }
     }
-}
-
-fn add_class_to_selector(selector: &str, class_name: &str) -> String {
-    let re = Regex::new(r"(?P<selector>.*)(?P<delimiter>[.#])(?P<element>[^\s#.]+)").unwrap();
-    let replaced = re.replace_all(selector, |caps: &regex::Captures| {
-        let delimiter = caps.name("delimiter").unwrap().as_str();
-        let element = caps.name("element").unwrap().as_str();
-        format!(
-            "{}{}{}",
-            caps.name("selector").unwrap().as_str(),
-            delimiter,
-            element
-        )
-    });
-    format!("{}{}", replaced, class_name)
-}
-
-#[derive(Clone)]
-pub struct StyleInfo {
-    pub class_name: String,
-    pub style_string: String,
 }
