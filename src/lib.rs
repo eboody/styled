@@ -37,11 +37,16 @@ pub fn get_style_info(styles_result: Result<Style>) -> StyleInfo {
 
     let style_string = re.replace_all(&style_string, &class_name);
 
-    println!("{style_string}");
 
     let re = Regex::new(r"(\.styled(-\d+)+) (-?[_a-zA-Z\.#~]+[_a-zA-Z0-9-]*+)").unwrap();
 
-    let new_style_string = re.replace_all(&style_string, "$3$1").to_string();
+    let regex_to_fix_stylist_bug = Regex::new(r"(\dpx)([-])").unwrap();
+
+    let style_string_with_fixed_pixels = regex_to_fix_stylist_bug.replace_all(&style_string, "$1 $2").to_string();
+
+    let new_style_string = re
+        .replace_all(&style_string_with_fixed_pixels, "$3$1")
+        .to_string();
 
     StyleInfo {
         class_name,
@@ -54,7 +59,12 @@ fn add_class_to_selector(selector: &str, class_name: &str) -> String {
     let replaced = re.replace_all(selector, |caps: &regex::Captures| {
         let delimiter = caps.name("delimiter").unwrap().as_str();
         let element = caps.name("element").unwrap().as_str();
-        format!("{}{}{}", caps.name("selector").unwrap().as_str(), delimiter, element)
+        format!(
+            "{}{}{}",
+            caps.name("selector").unwrap().as_str(),
+            delimiter,
+            element
+        )
     });
     format!("{}{}", replaced, class_name)
 }
