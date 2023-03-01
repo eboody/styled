@@ -26,4 +26,3 @@ ssr = [
   "leptos/ssr",
   "leptos_meta/ssr",
 ]
-
