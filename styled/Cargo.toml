@@ -1,0 +1,22 @@
+[package]
+name = "styled"
+version = "0.1.25"
+edition = "2021"
+description = "Scoped styles for your Leptos components"
+license = "APL-1.0"
+keywords = ["leptos", "scoped", "styles", "styling", "CSS"]
+categories = ["wasm", "web-programming"]
+readme = "README.md"
+homepage = "https://github.com/eboody/styled"
+
+[dependencies]
+leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false, features = [
+  "serde",
+  "ssr"
+], version = "0.2.0-beta" }
+leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
+stylist = "0.12.0"
+styled_macro = { path = "../styled_macro" }
+
+[features]
+ssr = ["leptos/ssr", "leptos_meta/ssr"]

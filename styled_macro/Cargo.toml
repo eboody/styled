@@ -1,0 +1,28 @@
+[package]
+name = "styled_macro"
+version = "0.1.24"
+edition = "2021"
+description = "Scoped styles for your Leptos components"
+license = "APL-1.0"
+keywords = ["leptos", "scoped", "styles", "styling", "CSS"]
+categories = ["wasm", "web-programming"]
+readme = "README.md"
+homepage = "https://github.com/eboody/styled"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro-error = "1.0.4"
+proc-macro2 = "1.0.51"
+quote = "1.0.23"
+stylist = "0.12.0"
+syn = "1.0.109"
+leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false, features = [
+  "serde",
+  "ssr"
+], version = "0.2.0-beta" }
+leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
+
+[features]
+ssr = ["leptos/ssr", "leptos_meta/ssr"]
