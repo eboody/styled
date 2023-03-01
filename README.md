@@ -7,7 +7,7 @@ If you're looking for an easy way to apply scoped styles to your [`Leptos`](http
 Use `cargo add` in your project root
 
 ```bash
-cargo add styled stylist regex
+cargo add styled stylist
 ```
 
 ## Usage
