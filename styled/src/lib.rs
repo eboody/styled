@@ -1,2 +1,2 @@
-pub use stylist::{Result, Style, style};
+pub use stylist::{Result, Style as Styles, style};
 pub use styled_macro::view;
