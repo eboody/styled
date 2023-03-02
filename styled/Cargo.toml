@@ -15,8 +15,8 @@ leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false
   "ssr"
 ], version = "0.2.0-beta" }
 leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
+styled_macro = "0.1.0"
 stylist = "0.12.0"
-styled_macro = { path = "../styled_macro" }
 
 [features]
 ssr = ["leptos/ssr", "leptos_meta/ssr"]
