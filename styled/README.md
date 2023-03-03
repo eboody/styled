@@ -66,7 +66,7 @@ pub fn MyComponent(cx: Scope) -> impl IntoView {
 
     styled::view! {
         cx,
-        styles,
+        styles={styles},
         <div>"This text should be red with white text."</div>
     }
 }
@@ -88,7 +88,7 @@ pub fn AnotherComponent(cx: Scope) -> impl IntoView {
 
     styled::view! {
         cx,
-        styles,
+        styles={styles},
         <div>"This text should be blue with gray text."</div>
     }
 }
@@ -157,7 +157,7 @@ pub fn Button(cx: Scope, variant: Variant) -> impl IntoView {
 
     styled::view! {
         cx,
-        styles,
+        styles={styles},
         <button disabled=disabled>"Button"</button>
     }
 }
