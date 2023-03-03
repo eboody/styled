@@ -12,7 +12,7 @@ homepage = "https://github.com/eboody/styled"
 [dependencies]
 leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
 leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
-styled_macro = {workspace=true}
+styled_macro = "1.3"
 stylist = "0.12.0"
 
 [features]
