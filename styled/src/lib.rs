@@ -21,8 +21,8 @@ macro_rules! view {
         view! {
             v,
             class={class_name.clone()},
-            $($tokens)*
             <Style>{style_string.clone()}</Style>
+            $($tokens)*
         }
     }};
 }
