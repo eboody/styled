@@ -2,7 +2,7 @@
 pub use stylist::{style, Result, Style as Styles};
 use regex::Regex;
 
-use leptos_meta::*;
+// use leptos_meta::*;
 use leptos::*;
 use leptos_dom::HydrationCtx;
 
