@@ -2,10 +2,10 @@
 pub use stylist::{style, Result, Style as Styles};
 use regex::Regex;
 
-// use leptos_meta::*;
 use leptos::*;
 use leptos_dom::HydrationCtx;
 
+pub use leptos_meta::{Style, StyleProps};
 
 #[macro_export]
 macro_rules! view {
@@ -16,10 +16,12 @@ macro_rules! view {
 
         let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
 
+        use $crate::{Style, StyleProps};
+
         view! {
             v,
             class={class_name.clone()},
-            <style>{style_string.clone()}</style>
+            <Style>{style_string.clone()}</Style>
             $($tokens)*
         }
     }};
