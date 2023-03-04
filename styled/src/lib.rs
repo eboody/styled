@@ -11,7 +11,7 @@ pub use leptos_meta::{Style, StyleProps};
 macro_rules! view {
     ($cx: expr, $styles:expr, $($tokens:tt)*) => {{
 
-        let v = $cx;
+        let cx = $cx;
         let style = $styles;
 
         let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
@@ -19,11 +19,11 @@ macro_rules! view {
         use $crate::{Style, StyleProps};
 
         view! {
-            v,
+            cx,
             class={class_name.clone()},
             <Style>{style_string.clone()}</Style>
             $($tokens)*
-        }
+        }.into_view(cx)
     }};
 }
 
