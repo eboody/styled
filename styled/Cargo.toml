@@ -1,6 +1,6 @@
 [package]
 name = "styled"
-version = "0.1.31"
+version = "0.1.32"
 edition = "2021"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
@@ -12,9 +12,10 @@ homepage = "https://github.com/eboody/styled"
 [dependencies]
 leptos = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
 leptos_meta = { git = "https://github.com/leptos-rs/leptos", default-features = false, version = "0.2.0-beta" }
-styled_macro = "0.1.4"
 stylist = "0.12.0"
-# styled_macro = { workspace = true }
+styled_macro = { workspace = true }
+regex = "1.7.1"
+# styled_macro = "0.1.4"
 
 [features]
 ssr = ["leptos/ssr", "leptos_meta/ssr"]
