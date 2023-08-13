@@ -4,7 +4,6 @@ pub use stylist::{style, Result, Style as Styles};
 
 pub use leptos::*;
 use leptos_dom::HydrationCtx;
-pub use leptos_meta;
 
 #[macro_export]
 macro_rules! view {
@@ -15,12 +14,10 @@ macro_rules! view {
 
         let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
 
-        use $crate::leptos_meta::{Style};
-
         view! {
             cx,
             class={class_name.clone()},
-            <Style>{style_string.clone()}</Style>
+            <style>{style_string.clone()}</style>
             $($tokens)*
         }.into_view(cx)
     }};

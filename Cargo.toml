@@ -2,7 +2,6 @@
 
 members = [
   "styled",
-  "styled_macro"
 ]
 
 [workspace.dependencies]
