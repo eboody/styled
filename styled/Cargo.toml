@@ -1,6 +1,6 @@
 [package]
 name = "styled"
-version = "0.1.40"
+version = "0.1.41"
 edition = "2021"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
@@ -10,6 +10,7 @@ readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
 [dependencies]
-leptos = { version = "0.4.8", features = ["nightly"] }
+leptos = { version = "0.4.8", features = ["nightly", "csr"] }
+leptos_meta = { version = "0.4.8", features = ["nightly", "csr"] }
 regex = "1.9.3"
 stylist = "0.12.1"
