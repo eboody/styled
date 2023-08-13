@@ -1,11 +1,10 @@
 // pub use styled_macro::view;
-pub use stylist::{style, Result, Style as Styles};
 use regex::Regex;
+pub use stylist::{style, Result, Style as Styles};
 
-use leptos::*;
+pub use leptos::*;
 use leptos_dom::HydrationCtx;
-
-pub use leptos_meta::{Style, StyleProps};
+pub use leptos_meta;
 
 #[macro_export]
 macro_rules! view {
@@ -16,7 +15,7 @@ macro_rules! view {
 
         let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
 
-        use $crate::{Style, StyleProps};
+        use $crate::leptos_meta::{Style};
 
         view! {
             cx,
