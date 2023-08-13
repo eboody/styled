@@ -3,14 +3,7 @@ use stylist::{Result, Style as Styles};
 pub use leptos::*;
 use leptos_dom::HydrationCtx;
 
-pub use stylist;
-
-#[macro_export]
-macro_rules! style {
-    ($($tokens:tt)*) => {
-        $crate::stylist::style!($($tokens)*)
-    };
-}
+pub use stylist::style;
 
 #[macro_export]
 macro_rules! view {
