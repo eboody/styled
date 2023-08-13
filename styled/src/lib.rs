@@ -1,9 +1,16 @@
-// pub use styled_macro::view;
-use regex::Regex;
-pub use stylist::{style, Result, Style as Styles};
+use stylist::{Result, Style as Styles};
 
 pub use leptos::*;
 use leptos_dom::HydrationCtx;
+
+pub use stylist;
+
+#[macro_export]
+macro_rules! style {
+    ($($tokens:tt)*) => {
+        $crate::stylist::style!($($tokens)*)
+    };
+}
 
 #[macro_export]
 macro_rules! view {
@@ -25,35 +32,47 @@ macro_rules! view {
 
 pub fn get_style_info(styles_result: Result<Styles>) -> StyleInfo {
     let hydration_context_id = HydrationCtx::peek();
-
     let style_struct = styles_result.unwrap();
+    let class_name = format!("styled-{}", hydration_context_id);
 
-    let class_name = String::from("styled-") + &hydration_context_id.to_string();
-
-    let style_string = style_struct.get_style_str().to_owned();
-
+    let mut style_string = style_struct.get_style_str().to_owned();
     style_struct.unregister();
 
-    let re = Regex::new(r"stylist-\w+").unwrap();
+    // Replace "stylist-\w+" with `class_name`
+    if let Some(start_index) = style_string.find("stylist-") {
+        let end_index = style_string[start_index..]
+            .find(|c: char| !c.is_alphanumeric())
+            .map_or_else(|| style_string.len(), |end| end + start_index);
+        style_string.replace_range(start_index..end_index, &class_name);
+    }
 
-    let style_string = re.replace_all(&style_string, &class_name);
+    // Fix stylist bug by adding space between "px" and "-"
+    style_string = style_string.replace("px-", "px -");
 
-    let re = Regex::new(r"(\.styled(-\d+)+) (-?[_a-zA-Z\.#~]+[_a-zA-Z0-9-]*+)").unwrap();
-
-    let regex_to_fix_stylist_bug = Regex::new(r"(\dpx)([-])").unwrap();
-
-    let style_string_with_fixed_pixels = regex_to_fix_stylist_bug
-        .replace_all(&style_string, "$1 $2")
-        .to_string();
-
-    let new_style_string = re
-        .replace_all(&style_string_with_fixed_pixels, "$3$1")
-        .to_string();
+    // Replace ".styled(-\d+)+ (-?[_a-zA-Z\.#~]+[_a-zA-Z0-9-]*+)" with "$3$1"
+    let styled_pattern = format!(".{}", class_name);
+    if let Some(start_index) = style_string.find(&styled_pattern) {
+        let end_index =
+            find_next_whitespace(&style_string, start_index).unwrap_or(style_string.len());
+        let selector = &style_string[end_index..]
+            .split_whitespace()
+            .next()
+            .unwrap_or("");
+        let replacement = format!("{} {}", selector, &styled_pattern);
+        style_string.replace_range(start_index..end_index + selector.len(), &replacement);
+    }
 
     StyleInfo {
         class_name,
-        style_string: new_style_string,
+        style_string,
     }
+}
+
+fn find_next_whitespace(s: &str, from_index: usize) -> Option<usize> {
+    s[from_index..]
+        .chars()
+        .position(|c| c.is_whitespace())
+        .map(|i| i + from_index)
 }
 
 #[derive(Clone)]
