@@ -10,7 +10,7 @@ readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
 [dependencies]
-leptos = { version = "0.4.8", features = ["nightly", "csr"] }
-leptos_meta = { version = "0.4.8", features = ["nightly", "csr"] }
+leptos = { version = "0.5.4", features = ["nightly", "csr"] }
+leptos_meta = { version = "0.5.4", features = ["nightly", "csr"] }
 regex = "1.9.3"
-stylist = "0.12.1"
+stylist = "0.13"
