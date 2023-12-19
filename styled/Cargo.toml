@@ -9,8 +9,19 @@ categories = ["wasm", "web-programming"]
 readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
+[features]
+csr = [
+    "leptos/csr",
+    "leptos_meta/csr"
+]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "stylist/ssr"
+]
+
 [dependencies]
-leptos = { version = "0.5.4", features = ["nightly", "csr"] }
-leptos_meta = { version = "0.5.4", features = ["nightly", "csr"] }
+leptos = { version = "0.5.4", features = ["nightly"] }
+leptos_meta = { version = "0.5.4", features = ["nightly"] }
 regex = "1.9.3"
 stylist = "0.13"
