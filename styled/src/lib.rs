@@ -25,7 +25,7 @@ macro_rules! view {
 }
 
 pub fn get_style_info(styles_result: Result<Styles>) -> StyleInfo {
-    let hydration_context_id = HydrationCtx::peek().expect("Failed to find hydration context!");
+    let hydration_context_id = HydrationCtx::peek_always();
 
     let style_struct = styles_result.unwrap();
 
