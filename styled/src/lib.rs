@@ -20,7 +20,7 @@ macro_rules! view {
             class={class_name.clone()},
             <Style>{style_string.clone()}</Style>
             $($tokens)*
-        }.into_view()
+        }
     }};
 }
 
