@@ -1,6 +1,6 @@
 [package]
 name = "styled"
-version = "0.1.41"
+version = "0.2.0"
 edition = "2021"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
@@ -9,8 +9,19 @@ categories = ["wasm", "web-programming"]
 readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
+[features]
+csr = [
+    "leptos/csr",
+    "leptos_meta/csr"
+]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "stylist/ssr"
+]
+
 [dependencies]
-leptos = { version = "0.4.8", features = ["nightly", "csr"] }
-leptos_meta = { version = "0.4.8", features = ["nightly", "csr"] }
+leptos = { version = "0.5.4", features = ["nightly"] }
+leptos_meta = { version = "0.5.4", features = ["nightly"] }
 regex = "1.9.3"
-stylist = "0.12.1"
+stylist = "0.13"

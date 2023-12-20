@@ -10,6 +10,23 @@ Use `cargo add` in your project root
 cargo add styled stylist
 ```
 
+Then make sure that your `Cargo.toml` is properly configured, adding the feature flags for Styled
+
+```toml
+[features]
+csr = ["leptos/csr", "leptos_meta/csr", "leptos_router/csr", "styled/csr"]
+ssr = [
+  "dep:actix-files",
+  "dep:actix-web",
+  "dep:leptos_actix",
+  "leptos/ssr",
+  "leptos_meta/ssr",
+  "leptos_router/ssr",
+  "stylist/ssr",
+  "styled/ssr",
+]
+```
+
 ## Usage
 
 First create a basic `Leptos` component. This will serve as the foundation for this little guide.
