@@ -16,7 +16,7 @@ macro_rules! view {
 
         let $crate::StyleInfo { class_name, style_string } = $crate::get_style_info(style);
         use $crate::Style;
-        view! {
+        ::leptos::view! {
             class={class_name.clone()},
             <Style>{style_string.clone()}</Style>
             $($tokens)*

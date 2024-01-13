@@ -101,8 +101,6 @@ pub fn view(tokens: TokenStream) -> TokenStream {
                 }
             };
 
-            
-
             output.into()
         }
         _ => {
