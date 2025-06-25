@@ -1,6 +1,6 @@
 [package]
 name = "styled"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2024"
 description = "Scoped styles for your Leptos components"
 license = "APL-1.0"
@@ -10,5 +10,5 @@ readme = "README.md"
 homepage = "https://github.com/eboody/styled"
 
 [dependencies]
-stylist = { version = "0.13.0", features = ["hydration"] }
+stylist = { version = "0.13.0" }
 styled_macro = "0.3.0"
