@@ -99,7 +99,7 @@ pub fn AnotherComponent() -> impl IntoView {
 // /src/components/button.rs
 
 use crate::theme::get_theme;
-use leptos::*;
+use leptos::prelude::*;
 use styled::style;
 
 #[derive(PartialEq)]
