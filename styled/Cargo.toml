@@ -11,4 +11,4 @@ homepage = "https://github.com/eboody/styled"
 
 [dependencies]
 stylist = { version = "0.13.0", features = ["hydration"] }
-styled_macro = { path = "../styled_macro" }
+styled_macro = "0.3.0"
