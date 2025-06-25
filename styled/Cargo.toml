@@ -1,0 +1,14 @@
+[package]
+name = "styled"
+version = "0.3.0"
+edition = "2024"
+description = "Scoped styles for your Leptos components"
+license = "APL-1.0"
+keywords = ["leptos", "scoped", "styles", "styling", "CSS"]
+categories = ["wasm", "web-programming"]
+readme = "README.md"
+homepage = "https://github.com/eboody/styled"
+
+[dependencies]
+stylist = { version = "0.13.0", features = ["hydration"] }
+styled_macro = { path = "../styled_macro" }
