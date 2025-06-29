@@ -7,7 +7,7 @@ license = "APL-1.0"
 keywords = ["leptos", "scoped", "styles", "styling", "CSS"]
 categories = ["wasm", "web-programming"]
 readme = "README.md"
-homepage = "https://github.com/eboody/styled"
+repository = "https://github.com/eboody/styled"
 
 [dependencies]
 stylist = { version = "0.13.0" }
